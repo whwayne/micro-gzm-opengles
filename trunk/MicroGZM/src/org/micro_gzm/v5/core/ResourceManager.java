@@ -12,6 +12,8 @@ public class ResourceManager {
 		// TODO Auto-generated constructor stub
 	}
 	
+	// TODO Finish the tutorial on loading images, 
+	// translate the FBXLoader (and the related classes) from the flash version	
 	public void loadFBXFile(String filePath) {
 		
 		try {
