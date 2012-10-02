@@ -13,12 +13,12 @@ import android.util.Log;
 
 public class ResourceManager {
 	
-	private AssetManager manager;
+	private AssetManager assets;
 
 	
 	public ResourceManager(Context ctx) {
 
-		manager = ctx.getAssets();
+		assets = ctx.getAssets();
 	}
 	
 	// TODO Finish the tutorial on loading images, 
@@ -28,11 +28,11 @@ public class ResourceManager {
 		
 		FBXLoader loader = new FBXLoader();
 		try {
-			//new BufferedReader(new InputStreamReader(manager.open(filePath), "UTF8"));
-			loader.loadFBX(new BufferedReader(new InputStreamReader(manager.open(filePath), "UTF8")));
+
+			loader.loadFBX(new BufferedReader(new InputStreamReader(assets.open(filePath), "UTF8")));
 		}
 		catch (IOException e) {
-			Log.d("MG", "Error: " + e.getMessage());
+			Log.d("MG", "ResourceManager Error: " + e.getMessage());
 		}
 	}
 
