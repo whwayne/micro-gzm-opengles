@@ -6,7 +6,6 @@ public class FBXDefinitions extends FBXLoader {
 	
 	private String fbxDefinitionsData;
 	
-	
 	public FBXDefinitions() {
 
 	}
