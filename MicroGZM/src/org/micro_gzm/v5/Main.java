@@ -22,13 +22,13 @@ public class Main extends Activity {
         
         setContentView(view);
         
-        init();
+        initialize();
     }
     
-    private void init() {
+    private void initialize() {
     	
     	model = new Model3D();
     	mng = new ResourceManager(this);
-    	//mng.loadFBXFile("raw/models/cube.fbx");
+    	mng.loadFBXFile("models/cube.fbx");
     }
 }
