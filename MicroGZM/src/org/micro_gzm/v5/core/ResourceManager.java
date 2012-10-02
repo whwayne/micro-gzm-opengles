@@ -1,35 +1,39 @@
 package org.micro_gzm.v5.core;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+
+import org.micro_gzm.v5.loaders.fbx.FBXLoader;
+
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.util.Log;
+
 
 public class ResourceManager {
 	
-	public ResourceManager()
-	{
-		// TODO Auto-generated constructor stub
+	private AssetManager manager;
+
+	
+	public ResourceManager(Context ctx) {
+
+		manager = ctx.getAssets();
 	}
 	
 	// TODO Finish the tutorial on loading images, 
 	// translate the FBXLoader (and the related classes) from the flash version	
 	public void loadFBXFile(String filePath) {
 		
-		try {
-			FileInputStream fstream = new FileInputStream(filePath);
-			
-			DataInputStream in = new DataInputStream(fstream);
-			BufferedReader br = new BufferedReader( new InputStreamReader(in) );
-			
-			String strLine;
-			
-		}
-		catch (Exception e) {
-			
-			  System.err.println("Error: " + e.getMessage());
-		 }
 		
+		FBXLoader loader = new FBXLoader();
+		try {
+			//new BufferedReader(new InputStreamReader(manager.open(filePath), "UTF8"));
+			loader.loadFBX(new BufferedReader(new InputStreamReader(manager.open(filePath), "UTF8")));
+		}
+		catch (IOException e) {
+			Log.d("MG", "Error: " + e.getMessage());
+		}
 	}
 
 }

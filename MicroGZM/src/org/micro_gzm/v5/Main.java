@@ -1,13 +1,17 @@
 package org.micro_gzm.v5;
 
 import org.micro_gzm.v5.core.GZMRenderer;
+import org.micro_gzm.v5.core.Model3D;
+import org.micro_gzm.v5.core.ResourceManager;
 
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.view.Menu;
 
 public class Main extends Activity {
+	
+	private Model3D model;
+	private ResourceManager mng;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -17,11 +21,14 @@ public class Main extends Activity {
         view.setRenderer(new GZMRenderer());
         
         setContentView(view);
+        
+        init();
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
+    
+    private void init() {
+    	
+    	model = new Model3D();
+    	mng = new ResourceManager(this);
+    	//mng.loadFBXFile("raw/models/cube.fbx");
     }
 }
