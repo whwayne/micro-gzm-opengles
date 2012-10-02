@@ -14,6 +14,8 @@ import android.util.Log;
 public class ResourceManager {
 	
 	private AssetManager assets;
+	
+	private FBXLoader loader;
 
 	
 	public ResourceManager(Context ctx) {
@@ -26,7 +28,8 @@ public class ResourceManager {
 	public void loadFBXFile(String filePath) {
 		
 		
-		FBXLoader loader = new FBXLoader();
+		loader = new FBXLoader();
+		
 		try {
 
 			loader.loadFBX(new BufferedReader(new InputStreamReader(assets.open(filePath), "UTF8")));
@@ -34,6 +37,16 @@ public class ResourceManager {
 		catch (IOException e) {
 			Log.d("MG", "ResourceManager Error: " + e.getMessage());
 		}
+	}
+	
+	public Model3D getModel() {
+		
+		Model3D model = new Model3D();
+		
+		model.initialize(loader.getObjectsData());
+		
+		
+		return model;
 	}
 
 }

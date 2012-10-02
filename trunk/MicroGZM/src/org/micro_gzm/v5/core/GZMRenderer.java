@@ -1,5 +1,7 @@
 package org.micro_gzm.v5.core;
 
+import java.util.Vector;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -7,15 +9,66 @@ import org.micro_gzm.v5.utils.ColorRGB;
 
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
+import android.util.FloatMath;
+import android.util.Log;
 
 public class GZMRenderer implements Renderer {
 	
 	private ColorRGB bckgrdColor = new ColorRGB(0.5f, 0.5f, 0.5f, 1.0f);
+	
+	private Vector<Model3D> models;
+	
+	private int tick = 0;
+	
+	public GZMRenderer() {
+
+		models = new Vector<Model3D>();
+	}
+	
+	public void addModel(Model3D modelIn) {
+		
+		models.add(modelIn);
+	}
 
 	@Override
 	public void onDrawFrame(GL10 gl) {
 		// Clears the screen and depth buffer.
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+
+		
+		// Counter-clockwise winding.
+		gl.glFrontFace(GL10.GL_CCW); // OpenGL docs
+		// Enable face culling.
+		gl.glEnable(GL10.GL_CULL_FACE); // OpenGL docs
+		// What faces to remove with the face culling.
+		gl.glCullFace(GL10.GL_BACK); // OpenGL docs
+
+		// Enabled the vertices buffer for writing and to be used during
+		// rendering.
+		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);// OpenGL docs.
+
+		gl.glLoadIdentity();
+    	gl.glTranslatef(0, 0, -10);
+		
+		for (Model3D mdl : models) {
+			
+			Log.d("MG", "GETTING IN");
+			mdl.setGL(gl);
+			mdl.rotate(tick, 0, 0, 1);
+			mdl.translate(0, 0, FloatMath.sin(tick));
+			
+			mdl.draw(gl);
+
+			Log.d("MG", "GETTING OUT");
+			
+		}
+
+		// Disable the vertices buffer.
+		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY); // OpenGL docs
+		// Disable face culling.
+		gl.glDisable(GL10.GL_CULL_FACE); // OpenGL docs
+		
+		tick++;
 		
 	}
 
@@ -27,6 +80,7 @@ public class GZMRenderer implements Renderer {
 		gl.glMatrixMode(GL10.GL_PROJECTION);
 		// Reset the projection matrix
 		gl.glLoadIdentity();
+
 		// Calculate the aspect ratio of the window
 		GLU.gluPerspective(gl, 45.0f, (float) width / (float) height, 0.1f, 100.0f);
 		// Select the modelview matrix

@@ -2,19 +2,21 @@ package org.micro_gzm.v5.loaders.fbx;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Vector;
 
-import com.eaio.stringsearch.StringSearch;
+import org.micro_gzm.v5.core.Object3D;
 
 import android.util.Log;
 
-public class FBXLoader {
+public class FBXLoader implements Loader {
 	
-	protected final String NAME = "FBXLoader";
+	public final static String NAME = "FBXLoader";
 	
 	protected String fbxData = "";
 	
 	protected FBXHeaderExtension fbxHeaderExtension;
 	protected FBXDefinitions fbxDefinitions;
+	protected FBXObjects fbxObjects;
 
 	
 	public FBXLoader() {
@@ -42,21 +44,15 @@ public class FBXLoader {
 	private void initialize() {
 		
 		//fbxHeaderExtension = new FBXHeaderExtension(getBlock(fbxData, FBXHeaderExtension.NAME));
-		fbxDefinitions = new FBXDefinitions(getBlock(fbxData, FBXDefinitions.NAME));
-		
-		
-		Log.d("MG", fbxHeaderExtension.getData());
+		//fbxDefinitions = new FBXDefinitions(getBlock(fbxData, FBXDefinitions.NAME));
+		fbxObjects = new FBXObjects(getBlock(fbxData, FBXObjects.NAME));
 		
 	}
 	
 	protected String getBlock(String dataIn, String blockName) {
 		
-		Log.d("MG", "getting block");
-		
 		String block = "";
 		int begin = dataIn.indexOf(blockName);
-		
-		Log.d("MG", Integer.toString(begin));
 		
 		if(begin != -1) {
 			
@@ -79,16 +75,146 @@ public class FBXLoader {
 				
 			}
 		}
-		Log.d("MG", "DONE");
-		
-		
-//		Log.d("MG", Integer.toString(a));
 		
 		return block;
 	}
 	
-	protected int search(String dataIn, String str) {
+
+	
+	protected String[] getBlockAttributes(String dataIn, String attr) {
 		
-		return -1;
+		int begin = dataIn.indexOf(attr) + attr.length();
+		
+		int end = dataIn.indexOf("{");
+		
+		String[] dataOut = dataIn.substring(begin, end).split(",");
+
+		return dataOut;
+	}
+	
+	protected String getPropertyBlock(String dataIn, String prop) {
+		
+		String r = "";
+		int begin = dataIn.indexOf(prop);
+
+		int i;
+		for(i = begin; i < dataIn.length(); i++) {
+
+			r += dataIn.charAt(i);
+			
+			if(String.valueOf(dataIn.charAt(i)) == "}") break;
+		}
+		
+		String f = "";
+		
+		for(i = r.indexOf("{"); i < r.indexOf("}"); i++) {
+
+			f += r.charAt(i);
+		}
+		
+		return f;
+	}
+	
+	protected String getDataFromBlock(String dataIn, String dataType) {
+
+		String str = "";
+		
+		if(dataIn.indexOf(dataType) > -1) str = dataIn.substring(dataIn.indexOf(dataType) + dataType.length(), dataIn.length());
+		
+		str = clearString(str);
+		
+		return str;
+	}
+	
+	protected Vector<Float> toVectorFloat(String dataIn) {
+		
+		
+		Vector<Float> vecNum = new Vector<Float>();
+		String[] arr = dataIn.split(",");
+		
+		int i;
+		for( i = 0; i < arr.length; i++) {
+			
+			if(isFloat(arr[i])) vecNum.add( Float.parseFloat(arr[i]) );
+		}
+		
+		return vecNum;
+	}
+	
+	
+//	protected Vector<Integer> toVectorInteger(String dataIn) {
+//		
+//		
+//		Vector<Integer> vecInt = new Vector<Integer>();
+//		String[] arr = dataIn.split(",");
+//		
+//		int i;
+//		for( i = 0; i < arr.length; i++) {
+//			
+//			if(isInteger(arr[i])) vecInt.add( Integer.parseInt(arr[i]) );
+//		}
+//		
+//		return vecInt;
+//	}
+
+	
+	
+	protected Vector<Short> toVectorShort(String dataIn) {
+		
+		
+		Vector<Short> vecShort = new Vector<Short>();
+		String[] arr = dataIn.split(",");
+		
+		int i;
+		for( i = 0; i < arr.length; i++) {
+			
+			if(isInteger(arr[i])) vecShort.add( Short.parseShort(arr[i]) );
+		}
+		
+		return vecShort;
+	}
+	
+	/**
+	 * UTILS
+	 * */
+	public boolean isFloat(String input)  {  
+	   try {  
+	      Float.parseFloat( input );  
+	      return true;  
+	   }
+	   catch( Exception e) {  
+	      return false;  
+	   }  
+	}
+	public boolean isInteger(String input)  {  
+	   try {  
+	      Integer.parseInt( input );  
+	      return true;  
+	   }
+	   catch( Exception e) {  
+	      return false;  
+	   }  
+	}
+	
+	protected String clearString(String dataIn) {
+
+		String str = dataIn.replace("\n", "");
+		str = dataIn.replace("\t", "");
+		
+		return str;
+	}
+	
+	public Object getData() {
+		
+		return this;
+	}
+	
+	public Object3D getObjectsData() {
+		
+		Object3D obj = new Object3D();
+		
+		obj.setData(fbxObjects, NAME);
+		
+		return obj;
 	}
 }
