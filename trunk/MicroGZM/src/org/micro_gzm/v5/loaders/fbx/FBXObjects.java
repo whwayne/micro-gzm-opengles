@@ -22,6 +22,14 @@ public class FBXObjects extends FBXLoader {
 		
 		initialize();
 	}
+
+	
+	public FBXObjects(StringBuffer dataIn) {
+
+		fbxObjectsData = dataIn.toString();
+		
+		initialize();
+	}
 	
 	private void initialize() {
 		

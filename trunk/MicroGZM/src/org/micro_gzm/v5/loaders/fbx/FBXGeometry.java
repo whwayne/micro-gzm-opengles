@@ -2,6 +2,8 @@ package org.micro_gzm.v5.loaders.fbx;
 
 import java.util.Vector;
 
+import android.util.Log;
+
 public class FBXGeometry extends FBXLoader {
 	
 	public static final String NAME = "Geometry";
@@ -42,6 +44,13 @@ public class FBXGeometry extends FBXLoader {
 		initialize();
 	}
 	
+	public FBXGeometry(StringBuffer dataIn) {
+		
+		fbxGeometryData = "Geometry: " + dataIn.toString();
+		
+		initialize();
+	}
+	
 	private void initialize() {
 
 		String[] attrData = getBlockAttributes(fbxGeometryData, "Geometry: ");
@@ -57,7 +66,13 @@ public class FBXGeometry extends FBXLoader {
 		numIndices = polygonVertexIndex.size();
 		
 		UV = toVectorFloat(getDataFromBlock(getPropertyBlock(fbxGeometryData, "UV:"), "a: "));
-		numUVS = UV.size();		
+		numUVS = UV.size();	
+		
+
+
+		Log.d("MG", vertices.toString());
+		Log.d("MG", "#######################");	
+		Log.d("MG", polygonVertexIndex.toString());
 	}
 	
 	public String getData() {
