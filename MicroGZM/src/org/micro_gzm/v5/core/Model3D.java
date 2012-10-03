@@ -24,9 +24,6 @@ public class Model3D extends Entity3D {
 	}
 	
 	public void initialize(Object3D dataIn) {
-		
-
-
 		vertices = dataIn.vertices;
 		indices = dataIn.indices;
 		UVS = dataIn.UVS;

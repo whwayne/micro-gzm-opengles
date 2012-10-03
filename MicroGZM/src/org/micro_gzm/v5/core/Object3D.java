@@ -5,15 +5,15 @@ import org.micro_gzm.v5.loaders.fbx.FBXObjects;
 import org.micro_gzm.v5.loaders.fbx.Loader;
 import org.micro_gzm.v5.loaders.obj.OBJLoader;
 
+import android.util.Log;
+
 public class Object3D {
 	
 	public float[] vertices;
 	public short[] indices;
 	public float[] UVS;
 	
-	public Object3D()
-	{
-		// TODO Auto-generated constructor stub
+	public Object3D() {
 	}
 
 	
@@ -33,12 +33,12 @@ public class Object3D {
 	private void setDataFromFBX(FBXObjects dataIn) {
 		
 		
-		int i;
-		int j;
+		int i, j;
 		for( i = 0; i < dataIn.geometries.size(); i++ ) {
 			
 			vertices = new float[dataIn.geometries.get(i).vertices.size()];
 			for(j = 0; j < dataIn.geometries.get(i).vertices.size(); j++) {
+				
 				
 				vertices[j] = dataIn.geometries.get(i).vertices.get(j);
 			}

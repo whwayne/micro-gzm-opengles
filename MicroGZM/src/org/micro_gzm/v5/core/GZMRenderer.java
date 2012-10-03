@@ -10,7 +10,6 @@ import org.micro_gzm.v5.utils.ColorRGB;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
 import android.util.FloatMath;
-import android.util.Log;
 
 public class GZMRenderer implements Renderer {
 	
@@ -51,16 +50,12 @@ public class GZMRenderer implements Renderer {
     	gl.glTranslatef(0, 0, -10);
 		
 		for (Model3D mdl : models) {
-			
-			Log.d("MG", "GETTING IN");
+
 			mdl.setGL(gl);
 			mdl.rotate(tick, 0, 0, 1);
 			mdl.translate(0, 0, FloatMath.sin(tick));
 			
-			mdl.draw(gl);
-
-			Log.d("MG", "GETTING OUT");
-			
+			mdl.draw(gl);			
 		}
 
 		// Disable the vertices buffer.
