@@ -1,5 +1,6 @@
 package org.micro_gzm.v5;
 
+import org.micro_gzm.v5.core.GZMGLSurfaceView;
 import org.micro_gzm.v5.core.GZMRenderer;
 import org.micro_gzm.v5.core.ResourceManager;
 import org.micro_gzm.v5.utils.GZMTimer;
@@ -11,7 +12,8 @@ import android.util.Log;
 
 public class Main extends Activity {
 	
-	private GZMRenderer renderer;
+	private GZMGLSurfaceView view;
+//	private GZMRenderer renderer;
 	private ResourceManager mng;
 
 	
@@ -20,15 +22,20 @@ public class Main extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        renderer = new GZMRenderer();
 
-		timer = new GZMTimer();
+        view = new GZMGLSurfaceView(this);
         
-        GLSurfaceView view = new GLSurfaceView(this);
-        view.setRenderer(renderer);
-        
+//        renderer = new GZMRenderer();
+//
+//		timer = new GZMTimer();
+//        
+//        GLSurfaceView view = new GLSurfaceView(this);
+//        view. setEGLContextClientVersion(2);
+//        view.setRenderer(renderer);
+//        
         setContentView(view);
+        
+        timer = new GZMTimer();
         
         initialize();
     }
@@ -39,12 +46,11 @@ public class Main extends Activity {
 		Log.d("MG", "PARSE STARTED @: " + timer.getElapsedTimeSecs() + " sec.");
     	
     	mng = new ResourceManager(this);
-    	mng.loadFBXFile("models/off.fbx");
+    	mng.loadFBXFile("models/cube.fbx");
     	
-    	renderer.addModel(mng.getModel());
-		Log.d("MG", "COMPLETE @: " + timer.getElapsedTimeSecs() + " sec.");
-    	
+    	view.addModel(mng.getModel());
 
+		Log.d("MG", "COMPLETE @: " + timer.getElapsedTimeSecs() + " sec.");
 		timer.stop();
     }
 }
